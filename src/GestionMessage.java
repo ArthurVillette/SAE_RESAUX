@@ -46,4 +46,13 @@ public class GestionMessage {
         return false;
     }
 
+    public Integer getLikes(int id) {
+        for (Message message : this.messages) {
+            if (message.getId() == id) {
+                return message.getLikes();
+            }
+        }
+        return null;
+    }
+
 }

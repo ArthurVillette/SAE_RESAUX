@@ -49,13 +49,28 @@ public class ServeurThread implements Runnable {
                 new Thread(new ServeurThreadEnvoie(this.clientSocket, this.gestionMessage, this.messages)).start();
                 String reponse;
                 while ((reponse = GestionCommande.jsonToCommande(reader.readLine()).getCommande()) != null) {
-                    if (reponse.split(" ")[0].equals("/like") && reponse.split(" ").length == 2){
-                        int id = Integer.parseInt(reponse.split(" ")[1]);
-                        if (this.gestionMessage.likeMessage(id)) {
-                            output.println(GestionCommande.commandeToJson("Message liké"));
+                    if (reponse.charAt(0) == '/') {
+                        if (reponse.split(" ")[0].equals("/like") && reponse.split(" ").length == 2 && reponse.split(" ")[1].matches("[0-9]+")){
+                            int id = Integer.parseInt(reponse.split(" ")[1]);
+                            if (this.gestionMessage.likeMessage(id)) {
+                                output.println(GestionCommande.commandeToJson("Message liké"));
+                            }
+                            else {
+                                output.println(GestionCommande.commandeToJson("L'id n'existe pas"));
+                            }
+                        }
+                        else if (reponse.split(" ")[0].equals("/get_like") && reponse.split(" ").length == 2 && reponse.split(" ")[1].matches("[0-9]+")){
+                            int id = Integer.parseInt(reponse.split(" ")[1]);
+                            if (this.gestionMessage.getLikes(id) != null) {
+                                output.println(GestionCommande.commandeToJson("Le message a "+this.gestionMessage.getLikes(id)+" likes"));
+                            }
+                            else {
+                                output.println(GestionCommande.commandeToJson("L'id n'existe pas"));
+                                
+                            }
                         }
                         else {
-                            output.println(GestionCommande.commandeToJson("L'id n'existe pas"));
+                            output.println(GestionCommande.commandeToJson("Commande inconnue"));
                         }
                     }
                     else {
