@@ -47,13 +47,24 @@ public class ServeurThread implements Runnable {
                     }
                 }
                 new Thread(new ServeurThreadEnvoie(this.clientSocket, this.gestionMessage, this.messages)).start();
-                String message;
-                while ((message = GestionCommande.jsonToCommande(reader.readLine()).getCommande()) != null) {
-                    Message messageObjet = new Message(this.gestionMessage.getMaximumId()+1, this.utilisateur.getNom(), message);
-                    this.gestionMessage.addMessage(messageObjet);
-                    System.out.println(messageObjet);
-                    for (List<Message> liste : this.messages.values()) {
-                        liste.add(messageObjet);
+                String reponse;
+                while ((reponse = GestionCommande.jsonToCommande(reader.readLine()).getCommande()) != null) {
+                    if (reponse.split(" ")[0].equals("/like") && reponse.split(" ").length == 2){
+                        int id = Integer.parseInt(reponse.split(" ")[1]);
+                        if (this.gestionMessage.likeMessage(id)) {
+                            output.println(GestionCommande.commandeToJson("Message liké"));
+                        }
+                        else {
+                            output.println(GestionCommande.commandeToJson("L'id n'existe pas"));
+                        }
+                    }
+                    else {
+                        Message messageObjet = new Message(this.gestionMessage.getMaximumId()+1, this.utilisateur.getNom(), reponse);
+                        this.gestionMessage.addMessage(messageObjet);
+                        System.out.println(messageObjet);
+                        for (List<Message> liste : this.messages.values()) {
+                            liste.add(messageObjet);
+                        }
                     }
                 }
             } catch (Exception e) {

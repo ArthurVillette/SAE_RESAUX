@@ -36,4 +36,14 @@ public class GestionMessage {
         return gson.fromJson(json, Message.class);
     }
 
+    public boolean likeMessage(int id) {
+        for (Message message : this.messages) {
+            if (message.getId() == id) {
+                message.addLike();
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

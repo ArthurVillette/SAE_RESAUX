@@ -24,7 +24,7 @@ public class ClientRecept implements Runnable {
                     if (message.getNomUtilisateur() == null) {
                         throw new Exception();
                     }
-                    System.out.println(message.getNomUtilisateur()+" : "+message.getContent());
+                    System.out.println(message.getNomUtilisateur()+" : "+message.getContent()+" (id : "+message.getId()+" date : "+message.getDate()+")");
                 }
                 catch(Exception e) {
                     Commande commande = GestionCommande.jsonToCommande(reponse);
