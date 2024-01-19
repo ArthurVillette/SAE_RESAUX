@@ -9,13 +9,12 @@ public class Serveur {
         ServerSocket serverSocket = new ServerSocket(4445);
         GestionUtilisateurs gestionUtilisateurs = new GestionUtilisateurs();
         GestionMessage gestionMessage = new GestionMessage();
-        GestionCommande gestionCommande = new GestionCommande();
         ConcurrentHashMap<Socket, List<Message>> messages = new ConcurrentHashMap<>();
 
         while (true) {
             Socket clientSocket = serverSocket.accept();
             messages.put(clientSocket, new CopyOnWriteArrayList<>());
-            new Thread(new ServeurThread(clientSocket, gestionUtilisateurs, gestionMessage, gestionCommande, messages)).start();
+            new Thread(new ServeurThread(clientSocket, gestionUtilisateurs, gestionMessage, messages)).start();
         }
     }
 }

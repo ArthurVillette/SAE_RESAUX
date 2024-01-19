@@ -6,13 +6,11 @@ public class ClientRecept implements Runnable {
 
     private GestionClient gestionClient;
     private Socket socket;
-    private GestionCommande gestionCommande;
     private GestionMessage gestionMessage;
 
     public ClientRecept(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
-        this.gestionCommande = new GestionCommande();
         this.gestionMessage = new GestionMessage();
     }
     
@@ -29,7 +27,7 @@ public class ClientRecept implements Runnable {
                     System.out.println(message.getNomUtilisateur()+" : "+message.getContent());
                 }
                 catch(Exception e) {
-                    Commande commande = gestionCommande.jsonToCommande(reponse);
+                    Commande commande = GestionCommande.jsonToCommande(reponse);
                     System.out.println(commande.getCommande());
                 }
             }

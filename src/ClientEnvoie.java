@@ -6,12 +6,11 @@ public class ClientEnvoie implements Runnable {
     
     private GestionClient gestionClient;
     private Socket socket;
-    private GestionCommande gestionCommande;
+
 
     public ClientEnvoie(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
-        this.gestionCommande = new GestionCommande();
     }
 
     public void run() {
@@ -23,7 +22,7 @@ public class ClientEnvoie implements Runnable {
                     String text = scanner.nextLine();
                     System.out.print("\033[1A");
                     System.out.print("\033[2K");
-                    String commandeJson = gestionCommande.commandeToJson(text);
+                    String commandeJson = GestionCommande.commandeToJson(text);
                     output.println(commandeJson);
                 }
                 catch(Exception e) {
