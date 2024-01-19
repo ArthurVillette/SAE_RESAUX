@@ -1,6 +1,7 @@
 import java.io.*; 
 import java.net.*; 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServeurThread implements Runnable {
         private Socket clientSocket;
@@ -8,13 +9,15 @@ public class ServeurThread implements Runnable {
         private GestionMessage gestionMessage;
         private GestionCommande gestionCommande;
         private Utilisateur utilisateur;
+        private ConcurrentHashMap<Socket, List<Message>> messages;
 
-        public ServeurThread(Socket socket, GestionUtilisateurs gestionUtilisateurs, GestionMessage gestionMessage, GestionCommande gestionCommande) {
+        public ServeurThread(Socket socket, GestionUtilisateurs gestionUtilisateurs, GestionMessage gestionMessage, GestionCommande gestionCommande, ConcurrentHashMap<Socket, List<Message>> messages) {
             this.clientSocket = socket;
             this.gestionUtilisateurs = gestionUtilisateurs;
             this.gestionMessage = gestionMessage;
             this.gestionCommande = gestionCommande;
             this.utilisateur = null;
+            this.messages = messages;
         }
 
         public void run() {
@@ -45,17 +48,18 @@ public class ServeurThread implements Runnable {
                         output.println(this.gestionCommande.commandeToJson("Utilisateur créé"));
                     }
                 }
-                
+                new Thread(new ServeurThreadEnvoie(this.clientSocket, this.gestionMessage, this.messages)).start();
                 String message;
                 while ((message = this.gestionCommande.jsonToCommande(reader.readLine()).getCommande()) != null) {
                     Message messageObjet = new Message(this.gestionMessage.getMaximumId()+1, this.utilisateur.getNom(), message);
                     this.gestionMessage.addMessage(messageObjet);
                     System.out.println(messageObjet);
-                    output.println(this.gestionMessage.messageToJson(messageObjet));
+                    for (List<Message> liste : this.messages.values()) {
+                        liste.add(messageObjet);
+                    }
                 }
             } catch (Exception e) {
-                System.out.println("Exception caught when trying to listen on port or listening for a connection");
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
