@@ -71,4 +71,54 @@ public class GestionUtilisateurs {
             return null;
         }
     }
+
+    public boolean follow(String nomUtilisateur, String nomUtilisateurSuivi) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "' AND nomUtilisateurAbonnee = '" + nomUtilisateurSuivi + "';");
+            if (resultSet.next()) {
+                return false; // L'utilisateur le suit déjà
+            } else {
+                statement.executeUpdate("INSERT INTO ABONNEMENT VALUES ('" + nomUtilisateur + "', '" + nomUtilisateurSuivi + "');");
+                return true;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
+    }
+
+    public boolean unfollow(String nomUtilisateur, String nomUtilisateurSuivi) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "' AND nomUtilisateurAbonnee = '" + nomUtilisateurSuivi + "';");
+            if (resultSet.next()) {
+                statement.executeUpdate("DELETE FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "' AND nomUtilisateurAbonnee = '" + nomUtilisateurSuivi + "';");
+                return true;
+            } else {
+                return false; // L'utilisateur ne le suit pas déjà
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
+    }
+
+    public boolean isFollowing(String nomUtilisateur, String nomUtilisateurSuivi) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "' AND nomUtilisateurAbonnee = '" + nomUtilisateurSuivi + "';");
+            if (resultSet.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
+    }
 }
