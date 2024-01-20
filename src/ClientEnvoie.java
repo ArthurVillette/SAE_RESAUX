@@ -2,17 +2,29 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * représente le thread qui gère l'envoie des messages du client
+ */
 public class ClientEnvoie implements Runnable {
     
     private GestionClient gestionClient;
     private Socket socket;
 
 
+    /**
+     * constructeur de la classe ClientEnvoie
+     * 
+     * @param gestionClient le gestionnaire du client
+     * @param socket la socket du client
+     */
     public ClientEnvoie(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
     }
 
+    /**
+     * permet de lancer le thread
+     */
     public void run() {
         try {
             PrintWriter output = new PrintWriter(this.socket.getOutputStream(), true);
