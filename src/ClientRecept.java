@@ -6,12 +6,10 @@ public class ClientRecept implements Runnable {
 
     private GestionClient gestionClient;
     private Socket socket;
-    private GestionMessage gestionMessage;
 
     public ClientRecept(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
-        this.gestionMessage = new GestionMessage();
     }
     
     public void run() {
@@ -20,7 +18,7 @@ public class ClientRecept implements Runnable {
             while (true) {
                 String reponse = reader.readLine();
                 try {
-                    Message message = gestionMessage.jsonToMessage(reponse);
+                    Message message = GestionMessage.jsonToMessage(reponse);
                     if (message.getNomUtilisateur() == null) {
                         throw new Exception();
                     }

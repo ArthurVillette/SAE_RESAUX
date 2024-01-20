@@ -1,32 +1,56 @@
 import java.util.List;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class GestionUtilisateurs {
-    private List<Utilisateur> utilisateurs;
+    private ConnexionMySQL connexionMySQL;
 
-    public GestionUtilisateurs() {
-        this.utilisateurs = new ArrayList<>();
+    public GestionUtilisateurs(ConnexionMySQL connexionMySQL) {
+        this.connexionMySQL = connexionMySQL;
     }
 
     public void addUser(String nom, String mdp) {
-        this.utilisateurs.add(new Utilisateur(nom, mdp));
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            statement.executeUpdate("INSERT INTO UTILISATEUR VALUES ('" + nom + "', '" + mdp + "');");
+            System.out.println("Utilisateur ajouté");
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+        }
     }
 
     public boolean userExists(String nom) {
-        for (Utilisateur utilisateur : this.utilisateurs) {
-            if (utilisateur.getNom().equals(nom)) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM UTILISATEUR WHERE nomUtilisateur = '" + nom + "';");
+            if (resultSet.next()) {
                 return true;
             }
+            else {
+                return false;
+            }
         }
-        return false;
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
     }
 
     public Utilisateur getUtilisateur(String nom) {
-        for (Utilisateur utilisateur : this.utilisateurs) {
-            if (utilisateur.getNom().equals(nom)) {
-                return utilisateur;
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM UTILISATEUR WHERE nomUtilisateur = '" + nom + "';");
+            if (resultSet.next()) {
+                return new Utilisateur(resultSet.getString("nomUtilisateur"), resultSet.getString("motDePasse"));
+            }
+            else {
+                return null;
             }
         }
-        return null;
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return null;
+        }
     }
 }
