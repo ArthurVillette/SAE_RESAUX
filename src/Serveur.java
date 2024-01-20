@@ -13,10 +13,12 @@ public class Serveur {
             ServerSocket serverSocket = new ServerSocket(4445);
             ConcurrentHashMap<String, List<Message>> messages = new ConcurrentHashMap<>();
             ConnexionMySQL connexionMySQL = new ConnexionMySQL();
-            connexionMySQL.connecter("sae_reseaux", "boby", "1");
+            connexionMySQL.connecter("sae_reseaux", "romain", "150404");
             System.out.println("Connexion à la base de données réussie");
             GestionUtilisateurs gestionUtilisateurs = new GestionUtilisateurs(connexionMySQL);
             GestionMessage gestionMessage = new GestionMessage(connexionMySQL);
+
+            new Thread(new ServeurThreadInput(gestionMessage, gestionUtilisateurs)).start();
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
