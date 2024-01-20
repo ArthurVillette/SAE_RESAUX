@@ -182,7 +182,11 @@ public class GestionUtilisateurs {
             return null;
         }
     }
-
+    /**
+     * supprime un utilisateur en tant qu'admin.
+     * @param nomUtilisateur le nom de l'utilisateur
+     * @return true si l'utilisateur a été supprimé, false sinon
+     */
     public boolean removeUtilisateur(String nomUtilisateur) {
         if (!this.userExists(nomUtilisateur)) {
             return false;
