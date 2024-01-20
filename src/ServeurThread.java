@@ -35,7 +35,7 @@ public class ServeurThread implements Runnable {
                 BufferedReader reader = new BufferedReader(stream);
                 PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 
-                while (this.utilisateur == null) {
+                while (this.utilisateur == null) { // tant que l'utilisateur n'est pas connecté
                     output.println(GestionCommande.commandeToJson("Quel est votre nom ?"));
                     String nom = GestionCommande.jsonToCommande(reader.readLine()).getCommande();
                     if (gestionUtilisateurs.userExists(nom)) {
@@ -58,12 +58,14 @@ public class ServeurThread implements Runnable {
                     }
                 }
 
+                // Permet d'afficher tout les anciens messages
                 this.messages.put(this.utilisateur.getNom(), new CopyOnWriteArrayList<>());
                 for (String nom : this.gestionUtilisateurs.getFollowed(this.utilisateur.getNom())) {
                     for (Message message : this.gestionMessage.getMessages(nom)) {
                         this.messages.get(this.utilisateur.getNom()).add(message);
                     }
                 }
+                System.out.println(this.gestionMessage.getMessages(this.utilisateur.getNom()).size());
                 for (Message message : this.gestionMessage.getMessages(this.utilisateur.getNom())) {
                     this.messages.get(this.utilisateur.getNom()).add(message);
                 }
@@ -79,7 +81,7 @@ public class ServeurThread implements Runnable {
                                 output.println(GestionCommande.commandeToJson("Message liké"));
                             }
                             else {
-                                output.println(GestionCommande.commandeToJson("L'id n'existe pas"));
+                                output.println(GestionCommande.commandeToJson("L'id n'existe pas, ou vous avez déjà liké ce message"));
                             }
                         }
 
@@ -121,6 +123,16 @@ public class ServeurThread implements Runnable {
                             }
                             else {
                                 output.println(GestionCommande.commandeToJson("L'id n'existe pas ou vous n'avez pas le droit de supprimer ce message"));
+                            }
+                        }
+
+                        else if (reponse.split(" ")[0].equals("/unlike") && reponse.split(" ").length == 2 && reponse.split(" ")[1].matches("[0-9]+")) {
+                            int id = Integer.parseInt(reponse.split(" ")[1]);
+                            if (this.gestionMessage.unlikeMessage(id, this.utilisateur.getNom())) {
+                                output.println(GestionCommande.commandeToJson("Message unliké"));
+                            }
+                            else {
+                                output.println(GestionCommande.commandeToJson("L'id n'existe pas ou vous n'avez pas liké ce message"));
                             }
                         }
 

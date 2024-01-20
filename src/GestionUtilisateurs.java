@@ -182,4 +182,29 @@ public class GestionUtilisateurs {
             return null;
         }
     }
+
+    public boolean removeUtilisateur(String nomUtilisateur) {
+        if (!this.userExists(nomUtilisateur)) {
+            return false;
+        }
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT idMessage FROM MESSAGE_U WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+            while (resultSet.next()) {
+                int idMessage = resultSet.getInt("idMessage");
+                Statement updateStatement = this.connexionMySQL.createStatement();
+                updateStatement.executeUpdate("DELETE FROM A_LIKE WHERE idMessage = " + idMessage + ";");
+            }
+            statement.executeUpdate("DELETE FROM MESSAGE_U WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+            statement.executeUpdate("DELETE FROM ABONNEMENT WHERE nomUtilisateurAbonnee = '" + nomUtilisateur + "';");
+            statement.executeUpdate("DELETE FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+            statement.executeUpdate("DELETE FROM UTILISATEUR WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+    
+            return true;
+        } catch (Exception e) {
+            System.out.println("Une erreur ici");
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
