@@ -106,6 +106,16 @@ public class ServeurThread implements Runnable {
                             }
                         }
 
+                        else if (reponse.split(" ")[0].equals("/delete") && reponse.split(" ").length == 2 && reponse.split(" ")[1].matches("[0-9]+")) {
+                            int id = Integer.parseInt(reponse.split(" ")[1]);
+                            if (this.gestionMessage.deleteU(id, this.utilisateur.getNom())) {
+                                output.println(GestionCommande.commandeToJson("Message supprimé"));
+                            }
+                            else {
+                                output.println(GestionCommande.commandeToJson("L'id n'existe pas ou vous n'avez pas le droit de supprimer ce message"));
+                            }
+                        }
+
                         else {
                             output.println(GestionCommande.commandeToJson("Commande inconnue"));
                         }

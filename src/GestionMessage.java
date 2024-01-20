@@ -108,4 +108,20 @@ public class GestionMessage {
             return null;
         }
     }
+
+    public boolean deleteU (int id, String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM MESSAGE_U WHERE idMessage = " + id + " AND nomUtilisateur = '" + nomUtilisateur + "';");
+            if (resultSet.next()) {
+                statement.executeUpdate("DELETE FROM MESSAGE_U WHERE idMessage = " + id + " AND nomUtilisateur = '" + nomUtilisateur + "';");
+                return true;
+            } else {
+                return false; // Aucun message ne correspond à l'ID fourni
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
+    }
 }
