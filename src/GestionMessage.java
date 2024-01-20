@@ -100,7 +100,29 @@ public class GestionMessage {
             System.out.println("Erreur lors de la création du statement");
             return false;
         }
+    }
+
+    public boolean unlikeMessage(int id, String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM MESSAGE_U WHERE idMessage = " + id + ";");
         
+            if (resultSet.next()) {
+                ResultSet userLiked = statement.executeQuery("SELECT * FROM A_LIKE WHERE nomUtilisateur = '" + nomUtilisateur + "' AND idMessage = " + id + ";");
+                if (userLiked.next()) {
+                    statement.executeUpdate("DELETE FROM A_LIKE WHERE nomUtilisateur = '" + nomUtilisateur + "' AND idMessage = " + id + ";");
+                    return true;
+                } else {
+                    return false; // L'utilisateur n'a pas aimé le message
+                }
+            } else {
+                return false; // Aucun message ne correspond à l'ID fourni
+
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
     }
 
     /**
