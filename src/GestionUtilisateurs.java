@@ -75,6 +75,12 @@ public class GestionUtilisateurs {
         }
     }
 
+    /**
+     * permet de follow un utilisateur.
+     * @param nomUtilisateur le nom de l'utilisateur qui follow
+     * @param nomUtilisateurSuivi le nom de l'utilisateur qui est follow
+     * @return true si l'utilisateur a été follow, false sinon
+     */
     public boolean follow(String nomUtilisateur, String nomUtilisateurSuivi) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -91,7 +97,12 @@ public class GestionUtilisateurs {
             return false;
         }
     }
-
+    /**
+     * permet de unfollow un utilisateur.
+     * @param nomUtilisateur le nom de l'utilisateur qui unfollow
+     * @param nomUtilisateurSuivi le nom de l'utilisateur qui est unfollow
+     * @return true si l'utilisateur a été unfollow, false sinon
+     */
     public boolean unfollow(String nomUtilisateur, String nomUtilisateurSuivi) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -108,7 +119,12 @@ public class GestionUtilisateurs {
             return false;
         }
     }
-
+    /**
+     * regarde si un utilisateur suit un autre utilisateur.
+     * @param nomUtilisateur le nom de l'utilisateur qui suit
+     * @param nomUtilisateurSuivi le nom de l'utilisateur qui est suivi
+     * @return true si l'utilisateur suit l'autre utilisateur, false sinon
+     */
     public boolean isFollowing(String nomUtilisateur, String nomUtilisateurSuivi) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -124,7 +140,11 @@ public class GestionUtilisateurs {
             return false;
         }
     }
-
+    /**
+     * donne la liste des followers d'un utilisateur.
+     * @param nomUtilisateur le nom de l'utilisateur
+     * @return la liste des followers
+     */
     public List<String> getFollowers(String nomUtilisateur) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -141,6 +161,12 @@ public class GestionUtilisateurs {
         }
     }
 
+    /**
+     * donne la liste des utilisateurs suivis par un utilisateur.
+     * 
+     * @param nomUtilisateur le nom de l'utilisateur
+     * @return la liste des utilisateurs suivis
+     */
     public List<String> getFollowed(String nomUtilisateur) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
