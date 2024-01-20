@@ -14,7 +14,7 @@ public class Serveur {
             ServerSocket serverSocket = new ServerSocket(4445);
             ConcurrentHashMap<Socket, List<Message>> messages = new ConcurrentHashMap<>();
             ConnexionMySQL connexionMySQL = new ConnexionMySQL();
-            connexionMySQL.connecter("sae_reseaux", "romain", "150404");
+            connexionMySQL.connecter("sae_reseaux", "boby", "1");
             System.out.println("Connexion à la base de données réussie");
             GestionUtilisateurs gestionUtilisateurs = new GestionUtilisateurs(connexionMySQL);
             GestionMessage gestionMessage = new GestionMessage(connexionMySQL);

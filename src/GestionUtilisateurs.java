@@ -7,7 +7,10 @@ import java.util.ArrayList;
  */
 public class GestionUtilisateurs {
     private ConnexionMySQL connexionMySQL;
-
+    /**
+     * Constructeur de la classe GestionUtilisateurs.
+     * @param connexionMySQL la connexion à la base de données
+     */
     public GestionUtilisateurs(ConnexionMySQL connexionMySQL) {
         this.connexionMySQL = connexionMySQL;
     }

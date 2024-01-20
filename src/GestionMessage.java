@@ -50,18 +50,32 @@ public class GestionMessage {
         }
     }
 
-
+    /**
+     * convertis un message en JSON.
+     * @param message le message à convertir
+     * @return le message en JSON
+     */
     public static String messageToJson(Message message) {
         Gson gson = new Gson();
         return gson.toJson(message);
     }
 
-
+    /**
+     * convertis un JSON en message.
+     * @param json le JSON à convertir
+     * @return le message
+     */
     public static Message jsonToMessage(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, Message.class);
     }
 
+    /**
+     * donne le message avec l'ID spécifié.
+     * 
+     * @param id l'ID du message
+     * @return le message
+     */
     public boolean likeMessage(int id, String nomUtilisateur) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
