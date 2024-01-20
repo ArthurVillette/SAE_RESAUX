@@ -126,6 +126,12 @@ public class GestionMessage {
         }
     }
 
+    /**
+     * supprime le message en tant que utilisateur
+     * @param id  l'ID du message
+     * @param nomUtilisateur le nom de l'utilisateur
+     * @return true si le message a été supprimé, false sinon
+     */
     public boolean deleteU (int id, String nomUtilisateur) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -142,6 +148,11 @@ public class GestionMessage {
         }
     }
 
+    /**
+     * donnes la liste des messages de l'utilisateur
+     * @param nomUtilisateur le nom de l'utilisateur
+     * @return la liste des messages de l'utilisateur
+     */
     public List<Message> getMessages(String nomUtilisateur) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
