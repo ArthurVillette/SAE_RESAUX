@@ -17,3 +17,8 @@
 
 
 - Après ouvrer autant de terminal que de client que vous voulez créer et dans chaque terminale lancer la commande ```./scriptClient.sh```
+
+
+
+VILLETTE Arthur
+MECHAIN Romain
