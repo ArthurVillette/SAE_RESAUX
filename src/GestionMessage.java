@@ -1,34 +1,31 @@
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.sql.*;
 import com.google.gson.Gson;
 
 /**
  * la classe GestionMessage permet de gérer les messages
  */
 public class GestionMessage {
-    private CopyOnWriteArrayList<Message> messages;
+    private ConnexionMySQL connexionMySQL;
 
-    /**
-     * le constructeur de la classe GestionMessage crée une liste de messages
-     */
-    public GestionMessage() {
-        this.messages = new CopyOnWriteArrayList<>();
+
+    public GestionMessage( ConnexionMySQL connexionMySQL){
+        this.connexionMySQL = connexionMySQL;
     }
 
-    /**
-     * ajoute un message à la liste de messages.
-     * 
-     * @param message le message à ajouter
-     */
+    // public GestionMessage() {
+    //     this.connexionMySQL = null;
+    // }
+
     public void addMessage(Message message) {
-        this.messages.add(message);
-    }
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            statement.executeUpdate("INSERT INTO MESSAGE_U VALUES (" + message.getId() + ", '" + message.getNomUtilisateur() + "', '" + message.getContent() + "', '" + message.getDate() + "');");
+            System.out.println("Message ajouté");
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+        }
 
-    /**
-     * affiche la liste de messages
-     * @return la liste de messages
-     */
-    public CopyOnWriteArrayList<Message> getMessages() {
-        return this.messages;
     }
 
     /**
@@ -37,51 +34,56 @@ public class GestionMessage {
      * @return l'ID maximum
      */
     public int getMaximumId() {
-        int max = 0;
-        for (Message message : this.messages) {
-            if (message.getId() > max) {
-                max = message.getId();
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(idMessage) FROM MESSAGE_U;");
+            if (resultSet.next()) {
+                return resultSet.getInt("MAX(idMessage)");
+            }
+            else {
+                return 0;
             }
         }
-        return max;
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return 0;
+        }
     }
 
-    /**
-     * convertis un message en JSON.
-     * 
-     * @param message le message à convertir
-     * @return le message en JSON
-     */
-    public String messageToJson(Message message) {
+
+    public static String messageToJson(Message message) {
         Gson gson = new Gson();
         return gson.toJson(message);
     }
 
-    /**
-     * convertis un JSON en message.
-     * 
-     * @param json le JSON à convertir en message
-     * @return le message
-     */
-    public Message jsonToMessage(String json) {
+
+    public static Message jsonToMessage(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, Message.class);
     }
 
-    /**
-     * ajoute un like au message avec l'ID spécifié.
-     * 
-     * @param id l'ID du message
-     * @return true si le message est trouvé, false sinon
-     */
-    public boolean likeMessage(int id) {
-        for (Message message : this.messages) {
-            if (message.getId() == id) {
-                message.addLike();
-                return true;
+    public boolean likeMessage(int id, String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM MESSAGE_U WHERE idMessage = " + id + ";");
+        
+            if (resultSet.next()) {
+                ResultSet userLiked = statement.executeQuery("SELECT * FROM A_LIKE WHERE nomUtilisateur = '" + nomUtilisateur + "' AND idMessage = " + id + ";");
+                if (userLiked.next()) {
+                    return false; // L'utilisateur a déjà aimé le message
+                } else {
+                    statement.executeUpdate("INSERT INTO A_LIKE (nomUtilisateur, idMessage) VALUES ('" + nomUtilisateur + "', " + id + ");");
+                    return true;
+                }
+            } else {
+                return false; // Aucun message ne correspond à l'ID fourni
+
             }
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
         }
-        return false;
+        
     }
 
     /**
@@ -91,11 +93,19 @@ public class GestionMessage {
      * @return le nombre de likes du message
      */
     public Integer getLikes(int id) {
-        for (Message message : this.messages) {
-            if (message.getId() == id) {
-                return message.getLikes();
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM A_LIKE WHERE idMessage = " + id + ";");
+            if (resultSet.next()) {
+                return resultSet.getInt("COUNT(*)");
+            }
+            else {
+                return null;
             }
         }
-        return null;
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return null;
+        }
     }
 }

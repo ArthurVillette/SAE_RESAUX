@@ -9,7 +9,6 @@ public class ClientRecept implements Runnable {
 
     private GestionClient gestionClient;
     private Socket socket;
-    private GestionMessage gestionMessage;
 
     /**
      * Constructeur de la classe ClientRecept.
@@ -20,7 +19,6 @@ public class ClientRecept implements Runnable {
     public ClientRecept(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
-        this.gestionMessage = new GestionMessage();
     }
     
     /**
@@ -32,7 +30,7 @@ public class ClientRecept implements Runnable {
             while (true) {
                 String reponse = reader.readLine();
                 try {
-                    Message message = gestionMessage.jsonToMessage(reponse);
+                    Message message = GestionMessage.jsonToMessage(reponse);
                     if (message.getNomUtilisateur() == null) {
                         throw new Exception();
                     }

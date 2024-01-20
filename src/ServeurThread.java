@@ -63,7 +63,7 @@ public class ServeurThread implements Runnable {
                     if (reponse.charAt(0) == '/') {
                         if (reponse.split(" ")[0].equals("/like") && reponse.split(" ").length == 2 && reponse.split(" ")[1].matches("[0-9]+")){
                             int id = Integer.parseInt(reponse.split(" ")[1]);
-                            if (this.gestionMessage.likeMessage(id)) {
+                            if (this.gestionMessage.likeMessage(id, this.utilisateur.getNom())) {
                                 output.println(GestionCommande.commandeToJson("Message liké"));
                             }
                             else {
