@@ -1,4 +1,7 @@
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 
 /**
@@ -116,6 +119,38 @@ public class GestionMessage {
             else {
                 return null;
             }
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return null;
+        }
+    }
+
+    public boolean deleteU (int id, String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM MESSAGE_U WHERE idMessage = " + id + " AND nomUtilisateur = '" + nomUtilisateur + "';");
+            if (resultSet.next()) {
+                statement.executeUpdate("DELETE FROM MESSAGE_U WHERE idMessage = " + id + " AND nomUtilisateur = '" + nomUtilisateur + "';");
+                return true;
+            } else {
+                return false; // Aucun message ne correspond à l'ID fourni
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return false;
+        }
+    }
+
+    public List<Message> getMessages(String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM MESSAGE_U WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+            List<Message> messages = new ArrayList<Message>();
+            while (resultSet.next()) {
+                messages.add(new Message(resultSet.getInt("idMessage"), resultSet.getString("nomUtilisateur"), resultSet.getString("contenu"), resultSet.getString("dateMessage")));
+            }
+            return messages;
         }
         catch (Exception e) {
             System.out.println("Erreur lors de la création du statement");
