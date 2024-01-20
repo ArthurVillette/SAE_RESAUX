@@ -20,7 +20,7 @@
   -  et enfin ```FLUSH PRIVILEGES;```
 
 ## lancement serveur clients
-
+- aller dans */bd*, lancer votre base de donné et faites la commandes ```source creation.sql```
 - il faut aller dans *src/Serveur* a la ligne **connexionMysql.connecter('nomBase','nomLogin','motdepasse')**
   changez 'nomLogin' par votre nom d'utilisateur SQL et mettez votre mots de passe SQL dans 'motdepasse'
 - après vous mettez les droits nécessaires au lancement des scripts sh, ``` chmod 700 (les droits que vous voulez mettre) fichier.sh``` . Faire cette commande pour **scriptClient.sh**, **scriptCompil.sh**,**scriptServeur.sh**.
