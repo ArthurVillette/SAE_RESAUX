@@ -25,6 +25,15 @@ public class ServeurThreadInput implements Runnable{
                         System.out.println("L'id ne correspond à aucun message");
                     }
                 }
+                else if (commande.split(" ")[0].equals("/remove") && commande.split(" ").length == 2) {
+                    String nomUtilisateur = commande.split(" ")[1];
+                    if (this.gestionUtilisateurs.removeUtilisateur(nomUtilisateur)) {
+                        System.out.println("Utilisateur supprimé");
+                    }
+                    else {
+                        System.out.println("L'utilisateur n'existe pas");
+                    }
+                }
                 else {
                     System.out.println("Commande inconnue");
                 }
