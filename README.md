@@ -23,10 +23,12 @@
 - aller dans */bd*, lancer votre base de donné et faites la commandes ```source creation.sql```
 - il faut aller dans *src/Serveur* a la ligne **connexionMysql.connecter('nomBase','nomLogin','motdepasse')**
   changez 'nomLogin' par votre nom d'utilisateur SQL et mettez votre mots de passe SQL dans 'motdepasse'
+
+-mettez vous a la racine du dossier 
 - après vous mettez les droits nécessaires au lancement des scripts sh, ``` chmod 700 (les droits que vous voulez mettre) fichier.sh``` . Faire cette commande pour **scriptClient.sh**, **scriptCompil.sh**,**scriptServeur.sh**.
 
 
-- Ensuite lancer d'abord le scriptClient.sh avec la commande ```./scriptCompil.sh```
+- Ensuite lancer d'abord le scriptCompil.sh avec la commande ```./scriptCompil.sh```
 
 
 - Après ouvrer un terminal pour lancer le serveur avec la commande ```./scriptServeur.sh```
