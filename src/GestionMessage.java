@@ -190,7 +190,11 @@ public class GestionMessage {
             return null;
         }
     }
-
+    /**
+     * supprime le message en tant que administrateur
+     * @param id l'ID du message
+     * @return true si le message a été supprimé, false sinon
+     */
     public boolean deleteS (int id) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
