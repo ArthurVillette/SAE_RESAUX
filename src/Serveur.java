@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList; 
 
+/**
+ * la classe Serveur permet de lancer le serveur
+ */
 public class Serveur {
     public static void main(String [] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(4445);
