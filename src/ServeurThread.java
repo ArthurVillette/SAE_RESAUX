@@ -59,6 +59,14 @@ public class ServeurThread implements Runnable {
                 }
 
                 this.messages.put(this.utilisateur.getNom(), new CopyOnWriteArrayList<>());
+                for (String nom : this.gestionUtilisateurs.getFollowed(this.utilisateur.getNom())) {
+                    for (Message message : this.gestionMessage.getMessages(nom)) {
+                        this.messages.get(this.utilisateur.getNom()).add(message);
+                    }
+                }
+                for (Message message : this.gestionMessage.getMessages(this.utilisateur.getNom())) {
+                    this.messages.get(this.utilisateur.getNom()).add(message);
+                }
                 new Thread(new ServeurThreadEnvoie(this.clientSocket, this.gestionMessage, this.messages, this.utilisateur)).start();
 
                 String reponse;

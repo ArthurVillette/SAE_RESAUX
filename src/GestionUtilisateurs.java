@@ -121,4 +121,36 @@ public class GestionUtilisateurs {
             return false;
         }
     }
+
+    public List<String> getFollowers(String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT nomUtilisateur FROM ABONNEMENT WHERE nomUtilisateurAbonnee = '" + nomUtilisateur + "';");
+            List<String> followers = new ArrayList<String>();
+            while (resultSet.next()) {
+                followers.add(resultSet.getString("nomUtilisateur"));
+            }
+            return followers;
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return null;
+        }
+    }
+
+    public List<String> getFollowed(String nomUtilisateur) {
+        try {
+            Statement statement = this.connexionMySQL.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT nomUtilisateurAbonnee FROM ABONNEMENT WHERE nomUtilisateur = '" + nomUtilisateur + "';");
+            List<String> followed = new ArrayList<String>();
+            while (resultSet.next()) {
+                followed.add(resultSet.getString("nomUtilisateurAbonnee"));
+            }
+            return followed;
+        }
+        catch (Exception e) {
+            System.out.println("Erreur lors de la création du statement");
+            return null;
+        }
+    }
 }

@@ -22,6 +22,14 @@ public class Message{
         this.likes=0;
     }
 
+    public Message(int id, String nomUtilisateur, String content, String date){
+        this.id=id;
+        this.nomUtilisateur=nomUtilisateur;
+        this.content=content;
+        this.date= date;
+        this.likes=0;
+    }
+
     /**
      * donne l'ID du message.
      * 
