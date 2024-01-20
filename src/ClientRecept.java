@@ -2,16 +2,28 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+/**
+ * Represente les threads qui gèrent la réception des messages du serveur par le client.
+ */
 public class ClientRecept implements Runnable {
 
     private GestionClient gestionClient;
     private Socket socket;
 
+    /**
+     * Constructeur de la classe ClientRecept.
+     * 
+     * @param gestionClient le gestionnaire du client.
+     * @param socket la socket du client.
+     */
     public ClientRecept(GestionClient gestionClient, Socket socket) {
         this.gestionClient = gestionClient;
         this.socket = socket;
     }
     
+    /**
+     * Permet de lancer le thread.
+     */
     public void run() {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));

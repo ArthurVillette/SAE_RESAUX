@@ -3,13 +3,22 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * la classe ServeurThread permet de gérer les threads du serveur
+ */
 public class ServeurThread implements Runnable {
         private Socket clientSocket;
         private GestionUtilisateurs gestionUtilisateurs;
         private GestionMessage gestionMessage;
         private Utilisateur utilisateur;
         private ConcurrentHashMap<Socket, List<Message>> messages;
-
+        /**
+         * le constructeur de la classe ServeurThread
+         * @param socket la socket du client
+         * @param gestionUtilisateurs le gestionnaire des utilisateurs
+         * @param gestionMessage le gestionnaire des messages
+         * @param messages la liste des messages
+         */
         public ServeurThread(Socket socket, GestionUtilisateurs gestionUtilisateurs, GestionMessage gestionMessage, ConcurrentHashMap<Socket, List<Message>> messages) {
             this.clientSocket = socket;
             this.gestionUtilisateurs = gestionUtilisateurs;
@@ -17,7 +26,9 @@ public class ServeurThread implements Runnable {
             this.utilisateur = null;
             this.messages = messages;
         }
-
+        /**
+         * permet de lancer le thread
+         */
         public void run() {
             try {
                 InputStreamReader stream = new InputStreamReader(this.clientSocket.getInputStream());

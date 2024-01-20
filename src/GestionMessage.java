@@ -1,8 +1,12 @@
 import java.sql.*;
 import com.google.gson.Gson;
 
+/**
+ * la classe GestionMessage permet de gérer les messages
+ */
 public class GestionMessage {
     private ConnexionMySQL connexionMySQL;
+
 
     public GestionMessage( ConnexionMySQL connexionMySQL){
         this.connexionMySQL = connexionMySQL;
@@ -21,8 +25,14 @@ public class GestionMessage {
         catch (Exception e) {
             System.out.println("Erreur lors de la création du statement");
         }
+
     }
 
+    /**
+     *donne l'ID maximum des messages
+     * 
+     * @return l'ID maximum
+     */
     public int getMaximumId() {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -40,10 +50,12 @@ public class GestionMessage {
         }
     }
 
+
     public static String messageToJson(Message message) {
         Gson gson = new Gson();
         return gson.toJson(message);
     }
+
 
     public static Message jsonToMessage(String json) {
         Gson gson = new Gson();
@@ -65,6 +77,7 @@ public class GestionMessage {
                 }
             } else {
                 return false; // Aucun message ne correspond à l'ID fourni
+
             }
         } catch (Exception e) {
             System.out.println("Erreur lors de la création du statement");
@@ -73,6 +86,12 @@ public class GestionMessage {
         
     }
 
+    /**
+     * donne le nombre de likes du message avec l'ID spécifié.
+     * 
+     * @param id l'ID du message
+     * @return le nombre de likes du message
+     */
     public Integer getLikes(int id) {
         try {
             Statement statement = this.connexionMySQL.createStatement();
@@ -89,5 +108,4 @@ public class GestionMessage {
             return null;
         }
     }
-
 }
